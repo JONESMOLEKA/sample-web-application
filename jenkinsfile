@@ -1,9 +1,18 @@
 pipeline{
     agent any
     stages{
-        stage("A"){
+        stage("code analysis"){
+            agent{
+                docker{
+                    image:"maven"
+                }
+            }
             steps{
-                echo "========executing A========"
+                script{
+                    withSonarQubeEnv(credentialsId: 'middle-name') {
+                        sh "mvn sonar:sonar"   
+                    }
+                }
             }
         }
     }
@@ -19,3 +28,5 @@ pipeline{
         }
     }
 }
+
+            
